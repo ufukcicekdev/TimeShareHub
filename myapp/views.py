@@ -4,7 +4,6 @@ from .forms import DocumentUploadForm
 from .models import UploadedDocument,UploadCounter
 from django.utils import timezone
 from django.db.models.signals import post_save
-from .tasks import delete_expired_files_s3
 from django.http import HttpResponse
 from django.dispatch import receiver
 from django.db import transaction
@@ -43,9 +42,6 @@ def increment_upload_counter(sender, instance, created, **kwargs):
             upload_counter.save()
 
 
-def delete_expired_documents_view(request):
-    delete_expired_files_s3.delay() 
-    return redirect("/")
 
 
 def upload_counter_view(request):
