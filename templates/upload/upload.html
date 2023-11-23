@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Home {% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center align-items-center mt-5">
+        <div class="col-md-6">
+            <div class="card" style="border-radius: 20px;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">File Upload</h5>
+                    <p class="card-text">Choose a file to upload. The uploaded document will be automatically deleted 2 hours later.</p>
+
+                    <form method="post" enctype="multipart/form-data" id="upload-form">
+                        {% csrf_token %}
+                        <div class="custom-file">
+                            {{ form.document }}
+                            <label class="custom-file-label" for="id_document">Choose File</label>
+                        </div>
+                        <button onclick="resetForm()" type="submit" class="btn btn-primary mt-3">Upload File</button>
+                    </form>
+                    
+                    {% if form.errors %}
+                        <div class="alert alert-danger mt-3">
+                            <strong>Oops! Something went wrong:</strong>
+                            <ul>
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 10px;">
+    <div class="row justify-content-center align-items-center mt-5">
+        <div class="col-md-6">
+            <div class="card" style="border-radius: 20px;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Upload Counter</h5>
+                    <p class="card-text">Current Count: {{ upload_count }}</p>
+                </div>
+            </div>
+    
+        </div>
+        
+    </div>
+    
+</div>
+<script>
+
+
+    document.getElementById('id_document').addEventListener('change', function() {
+        var fileName = this.files[0].name;
+        var label = document.querySelector('.custom-file-label');
+        label.textContent = fileName;
+    });
+
+
+document.getElementById("id_document").addEventListener("change", function() {
+    var fileInput = this;
+    var label = document.getElementById("fileLabel");
+    
+    if (fileInput.files.length > 0) {
+        label.textContent = fileInput.files[0].name;
+    } else {
+        label.textContent = "Choose File";
+    }
+});
+
+
+    window.onload = function () {
+        document.getElementById('id_document').value = '';
+        document.querySelector('.custom-file-label').textContent = 'Choose File';
+        function resetForm() {
+        document.getElementById("upload-form").reset();
+    }
+    };
+
+document.getElementById("id_document").setAttribute("accept", ".pdf, .doc, .docx, .xls, .xlsx, .txt, .zip, .jpeg, .jpg, .png, .gif, .bmp, .tiff, .tif, .rar");
+</script>
+
+   
+
+<style>
+.custom-file-input {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.custom-file-input label {
+  cursor: pointer;
+  display: inline-block;
+  padding: 8px 20px; /* Özel boyutları ayarlayabilirsiniz */
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #3498db; /* Arka plan rengi */
+  border: 1px solid #2980b9; /* Kenarlık rengi */
+  border-radius: 5px; /* Kenarlık yuvarlatma */
+}
+
+.custom-file-input input[type="file"] {
+  position: absolute;
+  font-size: 100px;
+  opacity: 0;
+  right: 0;
+  top: 0;
+}
+
+
+</style>
+
+{% endblock content %}

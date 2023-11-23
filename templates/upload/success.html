@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Home {% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center align-items-center mt-5">
+        <div class="col-md-6">
+            <div class="card" style="border-radius: 20px;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Shareable Link</h5>
+                    
+                    <p>Document uploaded successfully. Shareable link:</p>
+                    <input class="custom-input" type="text" value="{{ document_url }}" id="share-link" readonly>
+                    <button onclick="copyLink()" class="btn btn-primary mt-3">Copy Link</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    
+    function copyLink() {
+        var copyText = document.getElementById("share-link");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+    }
+</script>
+
+<style>
+      .custom-input {
+        position: relative;
+        overflow: hidden;
+        display: block; /* Display'ı block olarak değiştirdik */
+        margin: 0 auto; /* Horizontal olarak ortalamak için margin ekledik */
+        margin-bottom: 10px; /* Input ve buton arasındaki boşluğu ayarladık */
+    }
+
+    .btn-primary {
+        display: block; /* Butonu da block olarak değiştirdik */
+        margin: 0 auto; /* Butonu ortalamak için margin ekledik */
+        margin-top: 5px;
+    }
+</style>
+
+{% endblock content %}
+
+
