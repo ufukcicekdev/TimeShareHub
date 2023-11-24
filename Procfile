@@ -1,2 +1,1 @@
-web: gunicorn timesharehub.wsgi
-worker: python manage.py process_tasks
+web: web: gunicorn timesharehub.wsgi && python manage.py collectstatic --noinput
