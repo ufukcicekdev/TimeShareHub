@@ -1,1 +1,1 @@
-web: python manage.py collectstatic --noinput && gunicorn timesharehub.wsgi
+web: gunicorn timesharehub.wsgi
