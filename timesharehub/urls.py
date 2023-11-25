@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path,include, reverse
 from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls import handler404, handler500
 
 
 urlpatterns = [
@@ -27,3 +28,7 @@ urlpatterns = [
 
     # Diğer uygulama URL'leri...
 ] + static(settings.MEDIA_URL, settings.STATIC_URL,document_root=settings.MEDIA_ROOT)
+
+
+handler404 = 'myapp.views.custom_404_view'
+handler500 = 'myapp.views.custom_500_view'
