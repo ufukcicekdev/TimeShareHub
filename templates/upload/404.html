@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
+
 {% load static %}
-{% block title %} 404 Not Found {% endblock title %}
+
+{% block title %} 400 {% endblock title %}
 
 {% block content %}
+
 <style>
     .error-container {
         text-align: center;
@@ -34,4 +37,5 @@
     <p>Oops! The page you are looking for could not be found.</p>
     <a href="/" class="btn btn-primary">Go Back to Home</a>
 </div>
+
 {% endblock content %}
