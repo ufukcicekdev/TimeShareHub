@@ -92,7 +92,7 @@
 
         function checkFilesize() {
             var fileInput = document.getElementById('id_document');
-            var maxFileSize = 500 * 1024 * 1024;  // 500 MB'lık dosya boyutu sınırı
+            var maxFileSize = 50 * 1024 * 1024;  // 500 MB'lık dosya boyutu sınırı
 
             if (fileInput.files.length > 0) {
                 var fileSize = fileInput.files[0].size;
@@ -102,7 +102,7 @@
                     errorList.empty();
 
                     // Hata mesajını ekle
-                    errorList.append('<li>File size must be under 500 MB.</li>');
+                    errorList.append('<li>File size must be under 50 MB.</li>');
 
                     // Hata mesajlarını göster
                     errorMessages.show();

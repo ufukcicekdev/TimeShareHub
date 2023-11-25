@@ -9,8 +9,8 @@ def validate_file_size(value):
 
     filesize = value.size
 
-    if filesize > 500 * 1024 * 1024:  
-        raise ValidationError('File size must be under 500 MB.')
+    if filesize > 50 * 1024 * 1024:  
+        raise ValidationError('File size must be under 50 MB.')
 
 class DocumentUploadForm(forms.ModelForm):
     document = forms.FileField(validators=[validate_file_size], widget=forms.ClearableFileInput(attrs={'class': 'custom-file-input'}))
