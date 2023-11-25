@@ -190,11 +190,3 @@ BOOTSTRAP4 = {
 }
 
 
-from background_task.models import Task
-from myapp.tasks import delete_expired_files_s3
-
-Task.objects.create(
-    task=delete_expired_files_s3,
-    schedule=1,
-    repeat=Task.MINUTES,
-)
