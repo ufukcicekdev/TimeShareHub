@@ -26,18 +26,12 @@
                         <button onclick="resetForm()" type="submit" class="btn btn-primary mt-3">Upload File</button>
                     </form>
                     
-                    {% if form.errors %}
-                        <div class="alert alert-danger mt-3">
-                            <strong>Oops! Something went wrong:</strong>
-                            <ul>
-                                {% for field, errors in form.errors.items %}
-                                    {% for error in errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endif %}
+                    <div id="error-messages" class="alert alert-danger mt-3" style="display: none;">
+                        <strong>Oops! Something went wrong:</strong>
+                        <ul id="error-list">
+                            <!-- Hata mesajları buraya eklenecek -->
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -63,22 +57,37 @@
 
 <script>
     $(document).ready(function() {
+        // Sayfa yüklendiğinde mevcut hata mesajlarını kontrol et
+        checkFormErrors();
+
         // Dosya seçildiğinde tetiklenen olay
-        $('#id_document').on('change', function() {
-            var fileInput = this;
-            var maxFileSize = 500 * 1024 * 1024;  // 500 MB'lık dosya boyutu sınırı
-
-            // Seçilen dosyanın boyutunu kontrol et
-            if (fileInput.files.length > 0) {
-                var fileSize = fileInput.files[0].size;
-
-                if (fileSize > maxFileSize) {
-                    alert('File size must be under 500 MB.');
-                    // Dosyayı sıfırla (isteğe bağlı)
-                    $('#upload-form')[0].reset();
-                }
-            }
+        $('#upload-form').on('change', '#id_document', function() {
+            checkFormErrors();
         });
+
+        function checkFormErrors() {
+            var errorMessages = $('#error-messages');
+            var errorList = $('#error-list');
+            
+            // Hata mesajlarını temizle
+            errorList.empty();
+
+            // Formun hata mesajlarını kontrol et
+            {% if form.errors %}
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        // Hata mesajını ekle
+                        errorList.append('<li>{{ error }}</li>');
+                    {% endfor %}
+                {% endfor %}
+                
+                // Hata mesajlarını göster
+                errorMessages.show();
+            {% else %}
+                // Hata mesajlarını gizle
+                errorMessages.hide();
+            {% endif %}
+        }
     });
 </script>
 <script>
