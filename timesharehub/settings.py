@@ -68,6 +68,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "timesharehub.urls"
 
+ROBOTS_TXT_PATH = os.path.join(BASE_DIR, 'robots.txt')
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
