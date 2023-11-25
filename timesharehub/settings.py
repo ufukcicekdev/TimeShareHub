@@ -12,13 +12,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-from myapp.tasks import delete_expired_files_s3
-
 from dotenv import load_dotenv
 
 load_dotenv()
 
-delete_expired_files_s3(repeat=1)
 
 
 
@@ -185,11 +182,19 @@ AWS_S3_ENDPOINT_URL = os.getenv("AWS_S3_ENDPOINT_URL")
 DEFAULT_FILE_STORAGE = 'myapp.storage_backends.CustomS3Boto3Storage'
 
 
-#backgroundTask
-BACKGROUND_TASK_RUN_EVERY = 1
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 BOOTSTRAP4 = {
     'include_jquery': True,
 }
+
+
+from background_task.models import Task
+from myapp.tasks import delete_expired_files_s3
+
+Task.objects.create(
+    task=delete_expired_files_s3,
+    schedule=1,
+    repeat=Task.MINUTES,
+)
