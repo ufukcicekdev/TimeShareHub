@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.dispatch import receiver
 from django.db import transaction
 
+
 def upload_document(request):
     counter_instance = UploadCounter.objects.first()
     if request.method == 'POST':
@@ -58,3 +59,5 @@ def custom_404_view(request, exception):
 
 def custom_500_view(request):
     return render(request, 'errors/500.html', status=500)
+
+

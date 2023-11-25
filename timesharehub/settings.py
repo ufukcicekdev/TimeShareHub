@@ -56,9 +56,6 @@ INSTALLED_APPS = [
     "storages",
     "background_task",
     "captcha",
-    "crispy_forms",
-    "bootstrap4",
-    "crispy_bootstrap4",
 ]
 
 MIDDLEWARE = [
@@ -180,13 +177,3 @@ AWS_DEFAULT_ACL = os.getenv('AWS_DEFAULT_ACL')
 AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
 AWS_S3_ENDPOINT_URL = os.getenv("AWS_S3_ENDPOINT_URL")
 DEFAULT_FILE_STORAGE = 'myapp.storage_backends.CustomS3Boto3Storage'
-
-
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-BOOTSTRAP4 = {
-    'include_jquery': True,
-}
-
-

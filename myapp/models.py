@@ -30,3 +30,11 @@ class UploadedDocument(models.Model):
 
 class UploadCounter(models.Model):
     count = models.PositiveIntegerField(default=0)
+
+
+class LogEntry(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    message = models.TextField()
+
+    def __str__(self):
+        return f"{self.timestamp} - {self.message}"
