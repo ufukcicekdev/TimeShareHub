@@ -24,6 +24,7 @@ from django.conf.urls import handler404, handler500
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myapp.urls')),
+    path('captcha/', include('captcha.urls')),
 
 
     # Diğer uygulama URL'leri...

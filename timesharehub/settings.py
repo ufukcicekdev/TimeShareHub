@@ -53,6 +53,10 @@ INSTALLED_APPS = [
     "myapp",
     "storages",
     "background_task",
+    "captcha",
+    "crispy_forms",
+    "bootstrap4",
+    "crispy_bootstrap4",
 ]
 
 MIDDLEWARE = [
@@ -86,6 +90,9 @@ TEMPLATES = [
         },
     },
 ]
+
+
+
 
 
 WSGI_APPLICATION = "timesharehub.wsgi.application"
@@ -177,3 +184,7 @@ DEFAULT_FILE_STORAGE = 'myapp.storage_backends.CustomS3Boto3Storage'
 BACKGROUND_TASK_RUN_EVERY = 60 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}

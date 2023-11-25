@@ -23,7 +23,6 @@ def delete_expired_files_s3():
         expired_documents = UploadedDocument.objects.filter(expiration_date__lte=now)
         for document in expired_documents:
             file_path = document.document.name 
-            print("file_path",file_path)
 
             document.document.storage.delete(file_path) 
 

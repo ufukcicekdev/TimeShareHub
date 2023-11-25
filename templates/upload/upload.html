@@ -20,6 +20,9 @@
                             {{ form.document }}
                             <label class="custom-file-label" for="id_document">Choose File</label>
                         </div>
+                        <div class="custom-file" style="padding-top: 10px;">
+                            {{ form.captcha }}
+                        </div>
                         <button onclick="resetForm()" type="submit" class="btn btn-primary mt-3">Upload File</button>
                     </form>
                     
@@ -56,9 +59,9 @@
     
 </div>
 <script>
+ 
 
-
-    document.getElementById('id_document').addEventListener('change', function() {
+   document.getElementById('id_document').addEventListener('change', function() {
         var fileName = this.files[0].name;
         var label = document.querySelector('.custom-file-label');
         label.textContent = fileName;
@@ -85,7 +88,7 @@ document.getElementById("id_document").addEventListener("change", function() {
     }
     };
 
-document.getElementById("id_document").setAttribute("accept", ".pdf, .doc, .docx, .xls, .xlsx, .txt, .zip, .jpeg, .jpg, .png, .gif, .bmp, .tiff, .tif, .rar");
+    document.getElementById("id_document").setAttribute("accept", ".pdf, .doc, .docx, .xls, .xlsx, .txt, .zip, .jpeg, .jpg, .png, .gif, .bmp, .tiff, .tif, .rar, .mp4, .avi, .mkv, .mov, .wmv, .flv, .webm");
 </script>
 
    
