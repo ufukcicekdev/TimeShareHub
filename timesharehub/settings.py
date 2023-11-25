@@ -181,7 +181,7 @@ DEFAULT_FILE_STORAGE = 'myapp.storage_backends.CustomS3Boto3Storage'
 
 
 #backgroundTask
-BACKGROUND_TASK_RUN_EVERY = 60 
+BACKGROUND_TASK_RUN_EVERY = 1
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
