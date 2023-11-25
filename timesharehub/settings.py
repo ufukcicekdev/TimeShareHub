@@ -12,9 +12,14 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from myapp.tasks import delete_expired_files_s3
+
 from dotenv import load_dotenv
 
 load_dotenv()
+
+delete_expired_files_s3(repeat=1)
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
