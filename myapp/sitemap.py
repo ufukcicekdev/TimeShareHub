@@ -12,5 +12,8 @@ class MainLinkSiteMap(Sitemap):
     protocol = 'https'
 
     def items(self):
-        # Sadece ana URL'yi ekleyin
         return ['timesharehub.online']
+
+    def location(self, obj):
+        # Ana URL'nin gerçek bir sayfa değeri olmadığından None döndürün
+        return ''
