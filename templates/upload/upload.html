@@ -14,7 +14,6 @@
                     <h5 class="card-title">File Upload</h5>
                     <p class="card-text">Choose a file to upload. The uploaded document will be automatically deleted 30 minutes later.</p>
 
-
                     <form method="post" enctype="multipart/form-data" id="upload-form">
                         {% csrf_token %}
                         <div class="custom-file">
@@ -24,13 +23,12 @@
                         <div class="custom-file" style="padding-top: 10px;">
                             {{ form.captcha }}
                         </div>
-                        <button onclick="resetForm()" type="submit" class="btn btn-primary mt-3">Upload File</button>
+                        <button onclick="resetForm()" type="submit" id="upload-button" class="btn btn-primary mt-3" disabled>Upload File</button>
                     </form>
                     
                     <div id="error-messages" class="alert alert-danger mt-3" style="display: none;">
                         <strong>Oops! Something went wrong:</strong>
                         <ul id="error-list">
-                            <!-- Hata mesajları buraya eklenecek -->
                         </ul>
                     </div>
                 </div>
@@ -57,20 +55,20 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
+    var errorMessages = $('#error-messages');
+    var errorList = $('#error-list');
+    var uploadButton = $('#upload-button');
+    
     $(document).ready(function() {
         checkFormErrors();
 
         $('#upload-form').on('change', '#id_document', function() {
             checkFilesize();
+            checkFileExtensions(); 
             checkFormErrors();
         });
 
         function checkFormErrors() {
-            var errorMessages = $('#error-messages');
-            var errorList = $('#error-list');
-            
-            errorList.empty();
-
             {% if form.errors %}
                 {% for field, errors in form.errors.items %}
                     {% for error in errors %}
@@ -78,10 +76,12 @@
                     {% endfor %}
                 {% endfor %}
                 
-                errorMessages.show();
+                errorMessages.addClass('show');
             {% else %}
                 errorMessages.hide();
             {% endif %}
+
+            enableDisableUploadButton();
         }
 
         function checkFilesize() {
@@ -92,80 +92,100 @@
                 var fileSize = fileInput.files[0].size;
 
                 if (fileSize > maxFileSize) {
+                    console.log("file size 500mb");
                     errorList.empty();
-
                     errorList.append('<li>File size must be under 50 MB.</li>');
+                    errorMessages.addClass('show');
+                    $('#upload-form')[0].reset();
+                } else {
+                    errorMessages.removeClass('show');
+                    errorList.empty();
+                    enableDisableUploadButton();
+                    updateFileName();
+                }
+            } else {
+                errorMessages.addClass('show');
+                errorList.empty();
+                updateFileName();
+            }
+        }
 
-                    errorMessages.show();
+        function enableDisableUploadButton() {
+            var fileInput = document.getElementById('id_document');
+            var uploadButton = document.querySelector('button[type="submit"]');
+            if (fileInput.files.length > 0 &&  !errorMessages.hasClass('show')) {
+                uploadButton.removeAttribute('disabled');
+            } else {
+                uploadButton.setAttribute('disabled', 'disabled');
+            }
+        }
+
+        function updateFileName() {
+            var fileInput = document.getElementById('id_document');
+            var label = document.querySelector('.custom-file-label');
+
+            if (label) {
+                if (fileInput.files.length > 0) {
+                    label.textContent = fileInput.files[0].name;
+                } else {
+                    label.textContent = 'Choose File';
+                }
+            }
+        }
+
+        function checkFileExtensions() {
+            var fileInput = document.getElementById('id_document');
+            var allowedExtensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt', '.zip', '.jpeg', '.jpg', '.png', '.gif', '.bmp', '.tiff', '.tif', '.rar', '.mp4', '.avi', '.mkv', '.mov', '.wmv', '.flv', '.webm'];
+
+            if (fileInput.files.length > 0) {
+                var fileName = fileInput.files[0].name;
+                var fileExtension = '.' + fileName.split('.').pop().toLowerCase();
+
+                if (!allowedExtensions.includes(fileExtension)) {
+                    console.log("Invalid file type");
+                    errorList.empty();
+                    errorList.append('<li>Invalid file type. Allowed types: ' + allowedExtensions.join(', ') + '</li>');
+                    errorMessages.addClass('show');
                     $('#upload-form')[0].reset();
                 }
             }
         }
+        
     });
 </script>
-<script>
- 
-
-   document.getElementById('id_document').addEventListener('change', function() {
-        var fileName = this.files[0].name;
-        var label = document.querySelector('.custom-file-label');
-        label.textContent = fileName;
-    });
 
 
-document.getElementById("id_document").addEventListener("change", function() {
-    var fileInput = this;
-    var label = document.getElementById("fileLabel");
-    
-    if (fileInput.files.length > 0) {
-        label.textContent = fileInput.files[0].name;
-    } else {
-        label.textContent = "Choose File";
-    }
-});
-
-
-    window.onload = function () {
-        document.getElementById('id_document').value = '';
-        document.querySelector('.custom-file-label').textContent = 'Choose File';
-        function resetForm() {
-        document.getElementById("upload-form").reset();
-    }
-    };
-
-    document.getElementById("id_document").setAttribute("accept", ".pdf, .doc, .docx, .xls, .xlsx, .txt, .zip, .jpeg, .jpg, .png, .gif, .bmp, .tiff, .tif, .rar, .mp4, .avi, .mkv, .mov, .wmv, .flv, .webm");
-</script>
-
-   
 
 <style>
-.custom-file-input {
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-}
+    .show {
+        display: block !important; /* !important kullanımı gerekirse */
+    }
 
-.custom-file-input label {
-  cursor: pointer;
-  display: inline-block;
-  padding: 8px 20px; /* Özel boyutları ayarlayabilirsiniz */
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-  background-color: #3498db; /* Arka plan rengi */
-  border: 1px solid #2980b9; /* Kenarlık rengi */
-  border-radius: 5px; /* Kenarlık yuvarlatma */
-}
+    .custom-file-input {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+    }
 
-.custom-file-input input[type="file"] {
-  position: absolute;
-  font-size: 100px;
-  opacity: 0;
-  right: 0;
-  top: 0;
-}
+    .custom-file-input label {
+        cursor: pointer;
+        display: inline-block;
+        padding: 8px 20px; /* Özel boyutları ayarlayabilirsiniz */
+        font-size: 14px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #3498db; /* Arka plan rengi */
+        border: 1px solid #2980b9; /* Kenarlık rengi */
+        border-radius: 5px; /* Kenarlık yuvarlatma */
+    }
 
-
+    .custom-file-input input[type="file"] {
+        position: absolute;
+        font-size: 100px;
+        opacity: 0;
+        right: 0;
+        top: 0;
+    }
 </style>
 
 {% endblock content %}
