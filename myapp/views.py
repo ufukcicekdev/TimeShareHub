@@ -15,7 +15,7 @@ def upload_document(request):
         form = DocumentUploadForm(request.POST, request.FILES)
         if form.is_valid():
             document_instance = form.save(commit=False)
-            document_instance.expiration_date = timezone.now() + timezone.timedelta(hours=2)
+            document_instance.expiration_date = timezone.now() + timezone.timedelta(minutes=30)
             document_instance.save()
 
             document_url = request.build_absolute_uri(f'/document/{document_instance.uuid}/')

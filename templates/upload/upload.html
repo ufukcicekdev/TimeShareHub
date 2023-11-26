@@ -12,7 +12,8 @@
             <div class="card" style="border-radius: 20px;">
                 <div class="card-body text-center">
                     <h5 class="card-title">File Upload</h5>
-                    <p class="card-text">Choose a file to upload. The uploaded document will be automatically deleted 2 hours later.</p>
+                    <p class="card-text">Choose a file to upload. The uploaded document will be automatically deleted 30 minutes later.</p>
+
 
                     <form method="post" enctype="multipart/form-data" id="upload-form">
                         {% csrf_token %}
@@ -57,10 +58,8 @@
 
 <script>
     $(document).ready(function() {
-        // Sayfa yüklendiğinde mevcut hata mesajlarını kontrol et
         checkFormErrors();
 
-        // Dosya seçildiğinde tetiklenen olay
         $('#upload-form').on('change', '#id_document', function() {
             checkFilesize();
             checkFormErrors();
@@ -70,44 +69,34 @@
             var errorMessages = $('#error-messages');
             var errorList = $('#error-list');
             
-            // Hata mesajlarını temizle
             errorList.empty();
 
-            // Formun hata mesajlarını kontrol et
             {% if form.errors %}
                 {% for field, errors in form.errors.items %}
                     {% for error in errors %}
-                        // Hata mesajını ekle
                         errorList.append('<li>{{ error }}</li>');
                     {% endfor %}
                 {% endfor %}
                 
-                // Hata mesajlarını göster
                 errorMessages.show();
             {% else %}
-                // Hata mesajlarını gizle
                 errorMessages.hide();
             {% endif %}
         }
 
         function checkFilesize() {
             var fileInput = document.getElementById('id_document');
-            var maxFileSize = 50 * 1024 * 1024;  // 500 MB'lık dosya boyutu sınırı
+            var maxFileSize = 50 * 1024 * 1024;  
 
             if (fileInput.files.length > 0) {
                 var fileSize = fileInput.files[0].size;
 
                 if (fileSize > maxFileSize) {
-                    // Hata mesajlarını temizle
                     errorList.empty();
 
-                    // Hata mesajını ekle
                     errorList.append('<li>File size must be under 50 MB.</li>');
 
-                    // Hata mesajlarını göster
                     errorMessages.show();
-                    
-                    // Dosyayı sıfırla (isteğe bağlı)
                     $('#upload-form')[0].reset();
                 }
             }
